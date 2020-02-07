@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>{% block title %}yoursite.com{% endblock %}</title>
+  <title>{% block title %}Lyric Writer{% endblock %}</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -31,6 +31,171 @@
 
 <body>
 
+
+
+<br>
+ <div class="row">
+  {% if not show_images %}
+  <div class="column" id='filler_column'>
+    <span> <div> <br></div></span>
+  </div>
+  <div class="column">
+    <!-- Form Name -->
+    <center><legend><font size=20 face="Times New Roman">Lyric Writer</font></legend></center>
+    <center><font size=5 face="Times New Roman"> Compose an original song using AI trained on the top female queens of pop music.</font></center>
+    <br><br>
+    {% if error %}
+    <center><font color='red'><b>Please enter a single word without numbers or symbols</b></font></center>
+    <br>
+    {% endif %}
+    <!-- Text input-->
+    <fieldset>
+    <form action="{{ url_for('generate_lyrics')}}"method="post">
+    <div class="form-group">
+      <center><label class="col-md-4 control-label" for="textinput">Inspiration word</label> </center> 
+      <div class="col-md-4">
+      <input id="seed_word" name="seed_word" type="text" placeholder="Enter a single word " class="form-control input-md">
+      </div>
+    </div>
+    <div class="form-group">
+      <br><br><br>
+    <center><label class="col-md-4 control-label" for="textinput">Originality</label> </center>
+    <div class="col-md-4">
+    <center>
+    <div class="slidecontainer">
+      <input type="range" min="0" max="100" value="50" class="slider" id="originality" name="originality">
+    </center>
+    <center><span id="originality_text"></span></center>
+    <script>
+    var slider = document.getElementById("originality");
+    var output = document.getElementById("originality_text");
+    output.innerHTML = "Original";
+    output.value = 50; // Display the default slider value
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+      if (this.value>80){
+        output.innerHTML = "Highly original";
+      } else if (this.value>60) {
+        output.innerHTML = "Somewhat original";
+      } else if (this.value>40) {
+        output.innerHTML = "Original";
+      } else if (this.value>20) {
+        output.innerHTML = "Not very original";
+      } else {
+        output.innerHTML = "Unoriginal";
+      }
+    } 
+    </script>
+    </div>
+    </div>
+  <!-- Button -->
+  <br><br><br><br>
+  <div class="form-group">
+      <center><button id="singlebutton" name="singlebutton" class="btn btn-primary">Generate lyrics</button></center>
+  </div>
+</fieldset>
+</form>
+</div>
+
+<div class="column" id="filler_column">
+</div>
+{% endif %}
+
+{% if show_images %}
+  <div class="column">
+    <!-- Form Name -->
+    <center><legend><font size=20 face="Times New Roman">Lyric Writer</font></legend></center>
+    <center><font size=5 face="Times New Roman"> Compose an original song using AI trained on the top female queens of pop music.</font></center>
+    <br><br><br>
+    <!-- Text input-->
+    <fieldset>
+    <form action="{{ url_for('generate_lyrics')}}"method="post">
+    <div class="form-group">
+      <center><label class="col-md-4 control-label" for="textinput">Inspiration word</label> </center> 
+      <div class="col-md-4">
+      <input id="seed_word" name="seed_word" type="text" placeholder="Enter a single word " class="form-control input-md">
+      </div>
+    </div>
+    <div class="form-group">
+      <br><br><br>
+    <center><label class="col-md-4 control-label" for="textinput">Originality</label> </center>
+    <div class="col-md-4">
+    <center>
+    <div class="slidecontainer">
+      <input type="range" min="0" max="100" value="50" class="slider" id="originality" name="originality">
+    </center>
+    <center><span id="originality_text"></span></center>
+    <script>
+    var slider = document.getElementById("originality");
+    var output = document.getElementById("originality_text");
+    output.innerHTML = "Original";
+    output.value = 50; // Display the default slider value
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+      if (this.value>80){
+        output.innerHTML = "Highly original";
+      } else if (this.value>60) {
+        output.innerHTML = "Somewhat original";
+      } else if (this.value>40) {
+        output.innerHTML = "Original";
+      } else if (this.value>20) {
+        output.innerHTML = "Not very original";
+      } else {
+        output.innerHTML = "Unoriginal";
+      }
+    } 
+    </script>
+    </div>
+    </div>
+  <!-- Button -->
+  <br><br><br><br>
+  <div class="form-group">
+      <center><button id="singlebutton" name="singlebutton" class="btn btn-primary">Generate lyrics</button></center>
+  </div>
+</fieldset>
+</form>
+</div>
+
+
+
+  <div class="column">
+    <br>
+    <center><span id='song_title'><font size=4><b>{{song_title}}</b></font></span></center>
+    <br>
+    
+    <center><span id='lyrics'>{{lyrics|safe}}</span></center>
+    
+  </div>
+ 
+  <div class="column">
+    <br><br><br>
+    <center><span>These lyrics were influenced by:</span></center>
+    <br>
+    <br>
+    <br>
+    <center><img src="{{artist_images[0]}}" height="150" width="150" object-fit="cover"></center>
+    <center><span>{{artist_names[0]}}</span></center>
+    <center><span>{{artist_percents[0]}}%</span></center>
+    <br>
+    <center><img src="{{artist_images[1]}}" height="150" width="150" object-fit="cover"></center>
+    <center><span>{{artist_names[1]}}</span></center>
+    <center><span>{{artist_percents[1]}}%</span></center>
+    <br>
+    <center><img src="{{artist_images[2]}}" height="150" width="150" object-fit="cover"></center>
+    <center><span>{{artist_names[2]}}</span></center>
+    <center><span>{{artist_percents[2]}}%</span></center>
+  </div>
+</div> 
+<br>
+{% endif %}
+
+
+
+
+
+
+
+
   <header>
     {% include "header.html" %}
   </header>
@@ -42,6 +207,9 @@
   <footer>
     {% include "footer.html" %}
   </footer>
+
+
+
 
 
   <!-- JavaScript at the bottom for fast page loading -->
@@ -72,3 +240,58 @@
 
 </body>
 </html>
+
+
+<style>
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.column {
+  float: left;
+  width: 33%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
