@@ -2,8 +2,9 @@
 # Flask
 # ----------------------
 flask
-keras
-theano==0.7.0
+Keras==2.0.4
+PyYAML==3.12
+Theano==0.9.0
 pickle-mixin
 numpy
 nltk
