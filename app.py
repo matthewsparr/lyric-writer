@@ -12,7 +12,7 @@ import pickle
 
 #import theano
 import tensorflow as tf
-os.environ["MKL_THREADING_LAYER"] = "GNU"
+#os.environ["MKL_THREADING_LAYER"] = "GNU"
 #os.environ['KERAS_BACKEND'] = 'theano'
 import keras
 
@@ -22,6 +22,8 @@ import keras
 from keras.models import model_from_json
 import numpy as np
 import nltk
+from keras import backend as K
+from tensorflow import Graph, Session
 
 
 
@@ -51,18 +53,29 @@ for key,value in artist_tokenizer.word_index.items():
 
 json_file = open('lyric_model.json', 'r')
 loaded_model_json = json_file.read()
-json_file.close()
+
+json_file2 = open('artist_model.json', 'r')
+loaded_model_json_ = json_file2.read()
+
 global model
-model = model_from_json(loaded_model_json)
-model.load_weights("lyric_model.h5")
+graph1 = Graph()
+with graph1.as_default():
+    session1 = Session(graph=graph1)
+    with session1.as_default():
+        model = model_from_json(loaded_model_json)
+        model.load_weights("lyric_model.h5") # depends on your model type
 
-
-json_file = open('artist_model.json', 'r')
-loaded_model_json_ = json_file.read()
-json_file.close()
 global artist_model
-artist_model = model_from_json(loaded_model_json_)
-artist_model.load_weights("artist_model.h5")
+graph2 = Graph()
+with graph2.as_default():
+    session2 = Session(graph=graph2)
+    with session2.as_default():
+        artist_model = model_from_json(loaded_model_json_)
+        artist_model.load_weights("artist_model.h5")
+
+json_file.close()
+json_file2.close()
+
 
 #global graph
 #graph = tf.get_default_graph()
@@ -92,11 +105,15 @@ def generate_from_seed(seed_word, sample_flag, temp, length):
         x_pred = np.array(tokenizer.texts_to_sequences(sentence)).reshape(1,maxlen)
         if sample_flag:
             #with graph.as_default():
-            preds = model.predict(x_pred)[0]
-            pred = sample(preds, temp)
+            K.set_session(session1)
+            with graph1.as_default():
+                preds = model.predict(x_pred)[0]
+                pred = sample(preds, temp)
         else:
             #with graph.as_default():
-            pred = model.predict_classes(x_pred)[0]
+            K.set_session(session1)
+            with graph1.as_default():
+                pred = model.predict_classes(x_pred)[0]
         next_word = tokenizer.sequences_to_texts([[pred]])[0]
         sentence.append(next_word)
         sentence = sentence[1:]
@@ -158,8 +175,10 @@ def predict_artist(lyric_line):
             data.append(0)
     data = np.array(data).reshape(1,-1)
     #with graph.as_default():
-    preds = artist_model.predict(data)
-    probs = artist_model.predict_proba(data)[0]
+    K.set_session(session2)
+    with graph2.as_default():
+        preds = artist_model.predict(data)
+        probs = artist_model.predict_proba(data)[0]
     return artists[np.argmax(preds)], probs
 
 
@@ -192,7 +211,8 @@ def generate_lyrics():
             #artist_images.append(artist+'.jpg')
             artist_images.append("/static/img/" + artist + ".jpg")
         print(artist_images[0]) 
-    except:
+    except Exception as e: 
+        print(e)
         error = True
         show_images = False
         lyrics = artist_names = artist_percents = artist_images = song_title = " "
