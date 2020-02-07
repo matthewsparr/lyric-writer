@@ -2,7 +2,6 @@
 # Flask
 # ----------------------
 flask
-libpython
 mingw
 pymc3
 theano
