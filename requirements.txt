@@ -2,7 +2,6 @@
 # Flask
 # ----------------------
 flask
-mingw
 pymc3
 theano
 pickle-mixin
