@@ -3,7 +3,8 @@
 # ----------------------
 flask
 pymc3
-theano
+PyYAML
+Theano
 pickle-mixin
 keras
 numpy
