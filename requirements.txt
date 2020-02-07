@@ -2,8 +2,8 @@
 # Flask
 # ----------------------
 flask
-Keras==2.0.4
-keras_preprocessing==1.0.2
+keras
+keras_preprocessing
 PyYAML==3.12
 Theano==0.9.0
 pickle-mixin
