@@ -4,7 +4,7 @@
 flask
 pymc3
 PyYAML
-Theano
+theano==0.7.0
 pickle-mixin
 keras
 numpy
