@@ -10,9 +10,10 @@ import os
 from flask import Flask, render_template, request, redirect, url_for
 import pickle
 
-import theano
+#import theano
+import tensorflow as tf
 os.environ["MKL_THREADING_LAYER"] = "GNU"
-os.environ['KERAS_BACKEND'] = 'theano'
+#os.environ['KERAS_BACKEND'] = 'theano'
 import keras
 
 
