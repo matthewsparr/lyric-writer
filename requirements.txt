@@ -5,7 +5,7 @@ flask
 keras
 keras_preprocessing
 PyYAML==3.12
-Theano==0.9.0
+theano
 pickle-mixin
 numpy
 nltk
