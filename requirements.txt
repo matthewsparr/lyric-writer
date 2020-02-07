@@ -2,6 +2,7 @@
 # Flask
 # ----------------------
 flask
+theano
 pickle-mixin
 keras
 numpy
