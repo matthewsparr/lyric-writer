@@ -12,8 +12,9 @@ import pickle
 
 import theano
 os.environ["MKL_THREADING_LAYER"] = "GNU"
-import keras
 os.environ['KERAS_BACKEND'] = 'theano'
+import keras
+
 
 #import tensorflow as tf
 #import keras
