@@ -22,6 +22,7 @@ import keras
 from keras.models import model_from_json
 import numpy as np
 import nltk
+nltk.download('punkt')
 from keras import backend as K
 from tensorflow import Graph, Session
 
